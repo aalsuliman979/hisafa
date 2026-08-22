@@ -23,14 +23,12 @@ print("كل المصاريف:")
 for expense in expenses:
     print(expense)
 
-# حساب المجموع الكلي
 total = 0
 for expense in expenses:
     total = total + expense["amount"]
 
 print("\nإجمالي المصاريف:", total)
 
-# حساب المجموع حسب كل فئة
 totals_by_category = {}
 
 for expense in expenses:
