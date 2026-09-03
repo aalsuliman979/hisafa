@@ -1,14 +1,7 @@
-import sqlite3
+from db_helper import get_all_expenses
 
-connection = sqlite3.connect("hisafa.db")
-cursor = connection.cursor()
-
-cursor.execute("SELECT * FROM expenses")
-
-rows = cursor.fetchall()
+expenses = get_all_expenses()
 
 print("كل المصاريف المخزنة في قاعدة البيانات:")
-for row in rows:
-    print(row)
-
-connection.close()
+for expense in expenses:
+    print(expense)
