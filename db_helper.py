@@ -58,3 +58,23 @@ def delete_expense_by_category(category):
     """, (category,))
     connection.commit()
     connection.close()
+
+def get_total_expenses():
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT SUM(amount) FROM expenses")
+    result = cursor.fetchone()
+    connection.close()
+    return result[0]
+
+def get_totals_by_category():
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute("""
+    SELECT category, SUM(amount)
+    FROM expenses
+    GROUP BY category
+    """)
+    rows = cursor.fetchall()
+    connection.close()
+    return rows
