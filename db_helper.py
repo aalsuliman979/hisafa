@@ -78,3 +78,15 @@ def get_totals_by_category():
     rows = cursor.fetchall()
     connection.close()
     return rows
+
+def get_totals_by_month():
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute("""
+    SELECT strftime('%Y-%m', date) AS month, SUM(amount)
+    FROM expenses
+    GROUP BY month
+    """)
+    rows = cursor.fetchall()
+    connection.close()
+    return rows
