@@ -1,16 +1,5 @@
-import sqlite3
+from db_helper import update_expense_amount
 
-connection = sqlite3.connect("hisafa.db")
-cursor = connection.cursor()
-
-cursor.execute("""
-UPDATE expenses
-SET amount = ?
-WHERE category = ?
-""", (500, "Software"))
-
-connection.commit()
+update_expense_amount("Software", 500)
 
 print("تم تعديل المصروف")
-
-connection.close()
