@@ -14,3 +14,9 @@ totals_by_month = get_totals_by_month()
 print("\nالمصاريف حسب الشهر:")
 for month, amount in totals_by_month:
     print(month, ":", amount)
+
+    
+from db_helper import forecast_next_month
+
+forecast = forecast_next_month()
+print("\nتوقع مصاريف الشهر الجاي:", forecast)

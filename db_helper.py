@@ -131,3 +131,17 @@ def get_totals_by_month():
     except sqlite3.Error as e:
         print("خطأ في التجميع الشهري:", e)
         return []
+
+def forecast_next_month():
+    monthly_totals = get_totals_by_month()
+
+    if len(monthly_totals) < 2:
+        return None
+
+    last_month_amount = monthly_totals[-1][1]
+    previous_month_amount = monthly_totals[-2][1]
+
+    growth_rate = (last_month_amount - previous_month_amount) / previous_month_amount
+    forecast = last_month_amount * (1 + growth_rate)
+
+    return round(forecast, 2)

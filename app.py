@@ -1,8 +1,7 @@
 from flask import Flask
-from db_helper import get_total_expenses, get_totals_by_category, get_totals_by_month
+from db_helper import get_connection, get_total_expenses, get_totals_by_category, get_totals_by_month, forecast_next_month
 
 app = Flask(__name__)
-from db_helper import get_connection
 
 def init_db():
     connection = get_connection()
@@ -20,11 +19,13 @@ def init_db():
     connection.close()
 
 init_db()
+
 @app.route("/")
 def dashboard():
     total = get_total_expenses()
     by_category = get_totals_by_category()
     by_month = get_totals_by_month()
+    forecast = forecast_next_month()
 
     html = f"<h1>حِصافة - Dashboard</h1>"
     html += f"<h2>إجمالي المصاريف: {total}</h2>"
@@ -39,10 +40,12 @@ def dashboard():
         html += f"<li>{month}: {amount}</li>"
     html += "</ul>"
 
+    if forecast:
+        html += f"<h3>توقع الشهر الجاي: {forecast}</h3>"
+
     return html
 
-import os
-
 if __name__ == "__main__":
+    import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
