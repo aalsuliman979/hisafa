@@ -15,8 +15,14 @@ print("\nالمصاريف حسب الشهر:")
 for month, amount in totals_by_month:
     print(month, ":", amount)
 
-    
+
 from db_helper import forecast_next_month
 
 forecast = forecast_next_month()
 print("\nتوقع مصاريف الشهر الجاي:", forecast)
+
+insights = get_smart_insights()
+html += "<h3>تحليل ذكي:</h3><ul>"
+for insight in insights:
+        html += f"<li>{insight}</li>"
+html += "</ul>"

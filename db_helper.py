@@ -145,3 +145,31 @@ def forecast_next_month():
     forecast = last_month_amount * (1 + growth_rate)
 
     return round(forecast, 2)
+def get_smart_insights():
+    monthly_totals = get_totals_by_month()
+
+    if len(monthly_totals) < 2:
+        return ["لسه ما فيه بيانات كافية لتحليل الاتجاه (تحتاج شهرين على الأقل)"]
+
+    last_month, last_amount = monthly_totals[-1]
+    previous_month, previous_amount = monthly_totals[-2]
+
+    change = ((last_amount - previous_amount) / previous_amount) * 100
+
+    insights = []
+
+    if change > 15:
+        insights.append(f"⚠️ مصاريف {last_month} زادت بنسبة {change:.1f}% مقارنة بـ{previous_month} - يستاهل مراجعة")
+    elif change > 0:
+        insights.append(f"مصاريف {last_month} زادت بنسبة طفيفة ({change:.1f}%) مقارنة بـ{previous_month}")
+    elif change < -15:
+        insights.append(f"✅ مصاريف {last_month} انخفضت بنسبة {abs(change):.1f}% مقارنة بـ{previous_month} - أداء ممتاز")
+    else:
+        insights.append(f"مصاريف {last_month} مستقرة نسبيًا مقارنة بـ{previous_month} ({change:.1f}%)")
+
+    by_category = get_totals_by_category()
+    if by_category:
+        highest_category = max(by_category, key=lambda x: x[1])
+        insights.append(f"أعلى فئة إنفاق: {highest_category[0]} بمبلغ {highest_category[1]}")
+
+    return insights
