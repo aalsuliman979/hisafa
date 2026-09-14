@@ -30,9 +30,9 @@ def landing():
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #0d1117;
-            --bg-secondary: #161b22;
-            --bg-glass: rgba(22, 27, 34, 0.65);
+            --bg-primary: #161b22;
+            --bg-secondary: #1c2128;
+            --bg-glass: rgba(28, 33, 40, 0.65);
             --text-primary: #e6edf3;
             --text-secondary: #8b949e;
             --text-muted: #6e7681;
@@ -41,7 +41,7 @@ def landing():
             --gradient-primary: linear-gradient(135deg, #1f6feb, #388bfd);
             --gradient-hero: linear-gradient(135deg, #1f6feb 0%, #a371f7 50%, #388bfd 100%);
             --gradient-card: linear-gradient(145deg, rgba(56,139,253,0.08), rgba(163,113,247,0.08));
-            --border-color: #30363d;
+            --border-color: #363c46;
             --border-glow: rgba(56, 139, 253, 0.4);
             --radius-sm: 8px;
             --radius-md: 14px;
@@ -66,19 +66,45 @@ def landing():
         ul { list-style: none; }
         .container { max-width: var(--container-width); margin: 0 auto; padding: 0 24px; }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+        }
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .navbar {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
             background: var(--bg-glass);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border-color);
+            animation: fadeIn 0.5s ease-out;
         }
         .navbar .container {
-            display: flex; align-items: center; justify-content: space-between; padding-block: 16px;
+            display: flex; align-items: center; justify-content: space-between; padding-block: 14px;
         }
         .navbar-logo {
-            font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 8px;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        .navbar-logo:hover {
+            transform: scale(1.05);
+        }
+        .navbar-logo img {
+            height: 56px;
+            display: block;
         }
         .navbar-links { display: flex; gap: 32px; align-items: center; }
         .navbar-links a {
@@ -98,51 +124,66 @@ def landing():
             min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
             position: relative; padding: 120px 24px 80px; text-align: center; overflow: hidden;
         }
-        .hero::after {
-            content: ''; position: absolute; bottom: -20%; left: -10%;
-            width: 400px; height: 400px; background: var(--accent-purple);
-            filter: blur(140px); opacity: 0.15; z-index: -1; border-radius: 50%;
+        .mouse-glow {
+            position: absolute;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(56,139,253,0.25) 0%, rgba(163,113,247,0.12) 45%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            transition: left 0.15s ease-out, top 0.15s ease-out;
         }
-        .hero-badge {
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            background: var(--bg-glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-            padding: 10px 28px;
-            border-radius: 50px; font-size: 18px; font-weight: 600;
-            color: var(--text-primary); margin: 0 auto 28px auto;
+        .hero-logo-wrapper {
+            position: relative;
+            z-index: 1;
+            margin: 0 auto 36px auto;
             width: fit-content;
-            cursor: pointer;
-            transition: var(--transition-fast);
+            animation: fadeIn 0.6s ease-out;
         }
-        .hero-badge:hover {
-            border-color: var(--border-glow);
-            background: var(--bg-secondary);
+        .hero-logo {
+            width: 460px;
+            display: block;
+            animation: logoPulse 3s ease-in-out infinite;
         }
         .hero h1 {
+            position: relative; z-index: 1;
             font-size: clamp(26px, 5vw, 52px); font-weight: 800; line-height: 1.3;
             margin-bottom: 20px; max-width: 900px;
+            animation: fadeIn 0.6s ease-out 0.15s both;
         }
         .hero h1 .highlight {
             background: var(--gradient-hero);
+            background-size: 200% auto;
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            animation: gradientShift 4s ease infinite;
         }
         .hero p {
+            position: relative; z-index: 1;
             font-size: clamp(15px, 2vw, 18px); color: var(--text-secondary);
             max-width: 600px; margin-bottom: 36px; margin-inline: auto;
+            animation: fadeIn 0.6s ease-out 0.3s both;
         }
-        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+        .hero-buttons {
+            position: relative; z-index: 1;
+            display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+            animation: fadeIn 0.6s ease-out 0.45s both;
+        }
         .btn {
             padding: 14px 32px; border-radius: var(--radius-sm); font-weight: 600;
             font-size: 15px; cursor: pointer; border: none; transition: var(--transition-smooth);
         }
-        .btn-primary { background: var(--gradient-primary); color: white; box-shadow: var(--shadow-soft); }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+        .btn-primary {
+            background: var(--gradient-primary); background-size: 200% auto; color: white;
+            box-shadow: var(--shadow-soft);
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.03); box-shadow: var(--shadow-hover); }
         .btn-secondary {
             background: var(--bg-glass); backdrop-filter: blur(10px); color: var(--text-primary);
             border: 1px solid var(--border-color);
         }
-        .btn-secondary:hover { background: var(--bg-secondary); border-color: var(--border-glow); }
+        .btn-secondary:hover { background: var(--bg-secondary); border-color: var(--border-glow); transform: translateY(-3px); }
 
         .features { padding: 100px 24px; }
         .section-header { text-align: center; max-width: 600px; margin: 0 auto 60px; }
@@ -160,14 +201,22 @@ def landing():
             background: var(--gradient-card); backdrop-filter: blur(20px);
             border: 1px solid var(--border-color); border-radius: var(--radius-lg);
             padding: 32px; transition: var(--transition-smooth);
+            animation: fadeIn 0.6s ease-out both;
         }
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.25s; }
+        .feature-card:nth-child(3) { animation-delay: 0.4s; }
         .feature-card:hover {
-            transform: translateY(-8px); border-color: var(--border-glow); box-shadow: var(--shadow-hover);
+            transform: translateY(-10px) scale(1.02); border-color: var(--border-glow); box-shadow: var(--shadow-hover);
         }
         .feature-icon {
             width: 52px; height: 52px; background: var(--gradient-primary);
             border-radius: var(--radius-md); display: flex; align-items: center;
             justify-content: center; font-size: 24px; margin-bottom: 20px; box-shadow: var(--shadow-soft);
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover .feature-icon {
+            transform: rotate(-8deg) scale(1.1);
         }
         .feature-card h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
         .feature-card p { color: var(--text-secondary); font-size: 14.5px; line-height: 1.7; }
@@ -186,6 +235,7 @@ def landing():
             .navbar-links { display: none; }
             .hero { padding: 100px 20px 60px; }
             .features { padding: 70px 20px; }
+            .hero-logo { width: 280px; }
         }
         @media (max-width: 480px) {
             .hero-buttons { flex-direction: column; width: 100%; }
@@ -197,7 +247,9 @@ def landing():
 
     <nav class="navbar">
         <div class="container">
-            <div class="navbar-logo">حِصافة</div>
+            <div class="navbar-logo">
+                <img src="/static/logo.png" alt="حِصافة">
+            </div>
             <div class="navbar-links">
                 <a href="#features">المميزات</a>
                 <a href="mailto:aalsuliman979@gmail.com">تواصل</a>
@@ -206,8 +258,11 @@ def landing():
         </div>
     </nav>
 
-    <section class="hero">
-        <a href="#features" class="hero-badge">حِصافة</a>
+    <section class="hero" id="heroSection">
+        <div class="mouse-glow" id="mouseGlow"></div>
+        <div class="hero-logo-wrapper">
+            <img src="/static/logo.png" alt="حِصافة" class="hero-logo">
+        </div>
         <h1>حوّل مصاريفك إلى  <span class="highlight">قرارات ذكية</span></h1>
         <p>من إدخال المصروف إلى القرار النهائي — بخطوات بسيطة</p>
 
@@ -249,6 +304,19 @@ def landing():
         </div>
     </footer>
 
+    <script>
+        const heroSection = document.getElementById('heroSection');
+        const mouseGlow = document.getElementById('mouseGlow');
+
+        heroSection.addEventListener('mousemove', function(e) {
+            const rect = heroSection.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            mouseGlow.style.left = x + 'px';
+            mouseGlow.style.top = y + 'px';
+        });
+    </script>
+
     </body>
     </html>
     """
@@ -272,40 +340,29 @@ def dashboard():
         body {
             font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
             direction: rtl;
-            background-color: #0e1116;
+            background-color: #171b21;
             color: #e6e8eb;
             min-height: 100vh;
         }
         .topbar {
-            background-color: #14181f;
-            border-bottom: 1px solid #23272f;
-            padding: 18px 40px;
+            background-color: #1c2128;
+            border-bottom: 1px solid #2b313a;
+            padding: 14px 40px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        .topbar .icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #1f6feb, #3fb950);
-            border-radius: 9px;
+        .topbar-logo {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 7px;
         }
-        .topbar .icon svg {
-            width: 100%;
-            height: 100%;
-        }
-        .topbar .title {
-            font-size: 17px;
-            font-weight: 700;
-            color: #fff;
+        .topbar-logo img {
+            height: 52px;
+            display: block;
         }
         .topbar .subtitle {
             font-size: 12px;
-            color: #7d8590;
+            color: #8b939d;
         }
         .container {
             max-width: 1000px;
@@ -323,19 +380,20 @@ def dashboard():
             margin-bottom: 32px;
         }
         .stat-card {
-            background-color: #161b22;
-            border: 1px solid #23272f;
+            background-color: #1c2128;
+            border: 1px solid #2b313a;
             border-radius: 12px;
             padding: 20px;
             animation: fadeIn 0.45s ease-out;
-            transition: border-color 0.15s;
+            transition: border-color 0.15s, transform 0.15s;
         }
         .stat-card:hover {
             border-color: #2f81f7;
+            transform: translateY(-4px);
         }
         .stat-label {
             font-size: 12px;
-            color: #7d8590;
+            color: #8b939d;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -350,8 +408,8 @@ def dashboard():
         .stat-value.blue { color: #58a6ff; }
         .stat-value.orange { color: #d29922; }
         .section {
-            background-color: #161b22;
-            border: 1px solid #23272f;
+            background-color: #1c2128;
+            border: 1px solid #2b313a;
             border-radius: 12px;
             padding: 22px;
             margin-bottom: 20px;
@@ -360,7 +418,7 @@ def dashboard():
         .section-title {
             font-size: 13px;
             font-weight: 600;
-            color: #7d8590;
+            color: #8b939d;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 14px;
@@ -373,7 +431,7 @@ def dashboard():
             justify-content: space-between;
             align-items: center;
             padding: 10px 0;
-            border-bottom: 1px solid #21262d;
+            border-bottom: 1px solid #262c34;
             font-size: 14px;
         }
         .row:last-child { border-bottom: none; }
@@ -381,7 +439,7 @@ def dashboard():
         .row .amount {
             font-weight: 600;
             color: #e6e8eb;
-            background-color: #0e1116;
+            background-color: #171b21;
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 13px;
@@ -391,8 +449,8 @@ def dashboard():
             align-items: flex-start;
             gap: 10px;
             padding: 12px 14px;
-            background-color: #0e1116;
-            border: 1px solid #23272f;
+            background-color: #171b21;
+            border: 1px solid #2b313a;
             border-radius: 8px;
             margin-bottom: 10px;
             font-size: 13.5px;
@@ -402,7 +460,7 @@ def dashboard():
         label {
             display: block;
             font-size: 12.5px;
-            color: #7d8590;
+            color: #8b939d;
             margin-bottom: 6px;
             font-weight: 500;
         }
@@ -413,10 +471,10 @@ def dashboard():
             gap: 16px;
         }
         input[type=text], input[type=number], input[type=date] {
-            background-color: #0e1116;
+            background-color: #171b21;
             color: #e6e8eb;
             padding: 10px 12px;
-            border: 1px solid #23272f;
+            border: 1px solid #2b313a;
             border-radius: 8px;
             width: 100%;
             font-size: 14px;
@@ -444,14 +502,10 @@ def dashboard():
     <body>
 
     <div class="topbar">
-        <div class="icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 17L9 11L13 15L21 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M15 7H21V13" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+        <div class="topbar-logo">
+            <img src="/static/logo.png" alt="حِصافة">
         </div>
         <div>
-            <div class="title">حِصافة</div>
             <div class="subtitle">Financial Intelligence Platform</div>
         </div>
     </div>
