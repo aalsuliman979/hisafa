@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, redirect, session
 from db_helper import (
     init_tables, create_user, authenticate_user, add_expense,
@@ -6,7 +7,7 @@ from db_helper import (
 )
 
 app = Flask(__name__)
-app.secret_key = "hisafa-secret-key-change-this-later"
+app.secret_key = os.environ.get("SECRET_KEY", "hisafa-dev-secret-fallback")
 
 init_tables()
 
@@ -432,6 +433,5 @@ def add():
     return redirect("/dashboard")
 
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
